@@ -17,19 +17,26 @@ int main(void)
     const int screen_width_loc = GetShaderLocation(shader, "screen_width");
     const int screen_height_loc = GetShaderLocation(shader, "screen_height");
     const int angle_loc = GetShaderLocation(shader, "angle");
+    const int time_loc = GetShaderLocation(shader, "time");
+    const int num_sources_loc = GetShaderLocation(shader, "num_sources");
 
     float angle = 0.0f;
+    int num_sources = 4;
 
     while (!WindowShouldClose())
     {
         const int screen_width = GetScreenWidth();
         const int screen_height = GetScreenHeight();
+        const float time = (float)GetTime();
 
         SetShaderValue(
             shader, screen_width_loc, &screen_width, SHADER_UNIFORM_INT);
         SetShaderValue(
             shader, screen_height_loc, &screen_height, SHADER_UNIFORM_INT);
         SetShaderValue(shader, angle_loc, &angle, SHADER_UNIFORM_FLOAT);
+        SetShaderValue(shader, time_loc, &time, SHADER_UNIFORM_FLOAT);
+        SetShaderValue(
+            shader, num_sources_loc, &num_sources, SHADER_UNIFORM_INT);
 
         BeginDrawing();
         ClearBackground(BLACK);
