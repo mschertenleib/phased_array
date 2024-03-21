@@ -24,9 +24,29 @@ if (NOT raylib_FOUND)
 endif()
 
 
+set(RAYGUI_VERSION 4.0)
+find_package(raygui ${RAYGUI_VERSION} QUIET)
+if (NOT raygui_FOUND)
+    include(FetchContent)
+    FetchContent_Declare(
+        raygui
+        GIT_REPOSITORY https://github.com/raysan5/raygui.git
+        GIT_TAG ${RAYGUI_VERSION}
+    )
+    FetchContent_GetProperties(raygui)
+    if (NOT raygui_POPULATED)
+        set(FETCHCONTENT_QUIET NO)
+        FetchContent_Populate(raygui)
+        set(BUILD_RAYGUI_EXAMPLES OFF CACHE BOOL "" FORCE)
+        add_library(raygui INTERFACE)
+        target_include_directories(raygui SYSTEM INTERFACE ${raygui_SOURCE_DIR}/src)
+    endif()
+endif()
+
+
 add_executable(phased_array src/main.c)
 target_compile_features(phased_array PRIVATE c_std_99)
-target_link_libraries(phased_array raylib)
+target_link_libraries(phased_array PRIVATE raylib raygui)
 
 
 set(CLANG_WARNINGS

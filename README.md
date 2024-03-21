@@ -14,6 +14,7 @@ cmake --build build
 ## External libraries
 
 - [raylib](https://www.raylib.com/index.html)
+- [raygui](https://github.com/raysan5/raygui)
 
 ## License
 

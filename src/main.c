@@ -1,3 +1,6 @@
+#define RAYGUI_IMPLEMENTATION
+#include "raygui.h"
+
 #include "raylib.h"
 
 #if defined(PLATFORM_DESKTOP)
@@ -40,9 +43,13 @@ int main(void)
 
         BeginDrawing();
         ClearBackground(BLACK);
+
         BeginShaderMode(shader);
         DrawRectangle(0, 0, screen_width, screen_height, BLACK);
         EndShaderMode();
+
+        GuiLabel((Rectangle) {10, 50, 200, 20}, "A test label");
+
         DrawFPS(10, 10);
         EndDrawing();
     }
