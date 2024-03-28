@@ -3,30 +3,33 @@
 out vec4 color;
 
 uniform int screen_height;
-uniform float angle;
+uniform float phase_shift;
 uniform int num_sources;
 
 void main()
 {
-    const float k = 200.0;
-    const float omega = 10.0;
+    const float pi = 3.14159265358979323846;
+
+    float array_width = (float(num_sources) - 1.0) / (4.75 * float(num_sources) + 10.0);
+    float source_spacing = array_width / float(num_sources - 1);
+    float wavelength = (num_sources == 1) ? 0.21 : 4.0 * source_spacing;
+    float k = 2.0 * pi / wavelength;
     const float amplitude = 0.2;
 
     vec2 xy = gl_FragCoord.xy / screen_height;
 
-    float amplitude_real = 0.0;
-    float amplitude_imag = 0.0;
+    float wave = 0.0;
     for (int i = 0; i < num_sources; ++i)
     {
-        float source_y = (num_sources == 1) ? 0.5 : (0.35 + float(i) / float(num_sources - 1) * 0.3);
+        float source_y = 0.5 - array_width * 0.5 + float(i) * source_spacing;
         float r = distance(vec2(0.1, source_y), xy);
-        float phase_shift = (num_sources == 1) ? 0.0 : 8.0 * float(i) / float(num_sources - 1);
-
-        amplitude_real += amplitude / r * cos(-k * r + phase_shift);
-        amplitude_imag += amplitude / r * sin(-k * r + phase_shift);
+        float phase = (float(i) - float(num_sources - 1) * 0.5) * phase_shift * pi / 180.0;
+        wave += amplitude / r * cos(-k * r + phase);
     }
 
-    float wave_pos = sqrt(clamp(amplitude_real / float(num_sources), 0.0, 1.0));
-    float wave_neg = sqrt(clamp(-amplitude_real / float(num_sources), 0.0, 1.0));
+    // NOTE: `wave` is the physical wave function
+    // The values below are just arbitrarily processed to look nice
+    float wave_pos = sqrt(clamp(wave / float(num_sources), 0.0, 1.0));
+    float wave_neg = sqrt(clamp(-wave / float(num_sources), 0.0, 1.0));
     color = vec4(wave_pos, 0.6 * wave_pos + 0.4 * wave_neg, wave_neg, 1.0);
 }
