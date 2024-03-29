@@ -46,8 +46,6 @@ int main(void)
         DrawRectangle(0, 0, screen_width - ui_width, screen_height, BLACK);
         EndShaderMode();
 
-        DrawFPS(10, 10);
-
         // TODO: Proper GUI with nice panel for the controls and a GUI-themed
         // border around the simulation view
         GuiSlider((Rectangle) {ui_x + 110, 10, 100, 20},
@@ -61,18 +59,14 @@ int main(void)
                        "Sources",
                        &num_sources,
                        1,
-                       100,
+                       50,
                        num_sources_editing))
         {
             num_sources_editing = !num_sources_editing;
         }
-        if (num_sources < 1)
+        if (num_sources > 50)
         {
-            num_sources = 1;
-        }
-        else if (num_sources > 100)
-        {
-            num_sources = 100;
+            num_sources = 50;
         }
 
         EndDrawing();
