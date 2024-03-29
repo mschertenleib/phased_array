@@ -3,16 +3,16 @@
 out vec4 color;
 
 uniform int screen_height;
-uniform float phase_shift;
 uniform int num_sources;
+uniform float source_spacing;
+uniform float wavelength;
+uniform float phase_shift;
 
 void main()
 {
-    const float source_spacing = 0.005;
     float array_width = float(num_sources - 1) * source_spacing;
-    const float wavelength = 4.0 * source_spacing;
     const float pi = 3.14159265358979323846;
-    const float k = 2.0 * pi / wavelength;
+    float k = 2.0 * pi / wavelength;
     const float amplitude = 0.2;
 
     vec2 xy = gl_FragCoord.xy / screen_height;
