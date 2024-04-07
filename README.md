@@ -1,4 +1,4 @@
-# phased_array
+# Phased Array
 
 An interactive simulation of a phased array.
 
@@ -24,4 +24,3 @@ cmake --build build
 ## License
 
 This software is released under [MIT License](LICENSE).
-
